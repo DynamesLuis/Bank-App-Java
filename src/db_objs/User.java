@@ -5,14 +5,13 @@ import java.math.RoundingMode;
 
 public class User {
     private final int id;
-    private final String username, password, name;
+    private final String username, password;
     private BigDecimal currentBalance;
 
-    public User(int id, String username, String password, String name , BigDecimal currentBalance){
+    public User(int id, String username, String password, BigDecimal currentBalance){
         this.id = id;
         this.username = username;
         this.password = password;
-        this.name = name;
         this.currentBalance = currentBalance;
     }
 
@@ -26,10 +25,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public BigDecimal getCurrentBalance() {

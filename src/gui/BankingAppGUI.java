@@ -17,7 +17,7 @@ public class BankingAppGUI extends BaseFrame {
     protected void addGuiComponents() {
         String welcomeMessage = "<html>" +
                 "<body style='text-align:center'>" +
-                "<b>Hello " + user.getName() + "</b><br>" +
+                "<b>Hello " + user.getUsername() + "</b><br>" +
                 "What would you like to do today?</body></html>";
         JLabel welcomeMessageLabel = new JLabel(welcomeMessage);
         welcomeMessageLabel.setBounds(0, 20, getWidth() - 10, 40);
