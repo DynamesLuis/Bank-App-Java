@@ -1,7 +1,14 @@
 package gui;
 
+import db_objs.JDBC;
+import db_objs.User;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LoginGUI extends BaseFrame{
     public LoginGUI() {
@@ -40,6 +47,21 @@ public class LoginGUI extends BaseFrame{
         loginButton.setBounds(20, 460, getWidth() - 50, 40);
         loginButton.setFont(new Font("Dialog", Font.PLAIN, 20));
         loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String username = usernameField.getText();
+                String password = String.valueOf(passwordField.getPassword());
+                User user = JDBC.validateLogin(username, password);
+                if (user != null) {
+                    LoginGUI.this.dispose();
+                    BankingAppGUI bankingAppGUI = new BankingAppGUI(user);
+                    bankingAppGUI.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(LoginGUI.this, "Login failed, try again!");
+                }
+            }
+        });
         add(loginButton);
 
         JLabel registerLabel = new JLabel("<html><a href=\"#\">Don't have an account? Register Here</a></html>");
@@ -47,6 +69,15 @@ public class LoginGUI extends BaseFrame{
         registerLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
         registerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         registerLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        registerLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                LoginGUI.this.dispose();
+                RegisterGUI registerGUI = new RegisterGUI();
+                registerGUI.setVisible(true);
+            }
+        });
         add(registerLabel);
     }
 }

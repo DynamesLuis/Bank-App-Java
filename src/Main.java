@@ -11,9 +11,9 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //new LoginGUI().setVisible(true);
+                new LoginGUI().setVisible(true);
                 //new RegisterGUI().setVisible(true);
-                new BankingAppGUI(new User(1, "dynames", "1234", "Luis Gabriel", new BigDecimal("20.00"))).setVisible(true);
+                //new BankingAppGUI(new User(1, "dynames", "1234", new BigDecimal("20.00"))).setVisible(true);
             }
         });
     }
