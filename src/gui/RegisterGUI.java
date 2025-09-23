@@ -1,7 +1,13 @@
 package gui;
 
+import db_objs.JDBC;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RegisterGUI extends BaseFrame {
     public RegisterGUI() {
@@ -50,6 +56,28 @@ public class RegisterGUI extends BaseFrame {
         registerButton.setBounds(20, 460, getWidth() - 50, 40);
         registerButton.setFont(new Font("Dialog", Font.BOLD, 20));
         registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        registerButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String username = usernameField.getText();
+                String password = String.valueOf(passwordField.getPassword());
+                String rePassword= String.valueOf(rePasswordField.getPassword());
+                if (validateUserInput(username, password, rePassword)){
+                    if(JDBC.register(username, password)) {
+                        RegisterGUI.this.dispose();
+                        LoginGUI loginGUI = new LoginGUI();
+                        loginGUI.setVisible(true);
+                        JOptionPane.showMessageDialog(loginGUI, "Account created!");
+                    } else {
+                        JOptionPane.showMessageDialog(RegisterGUI.this, "Error: Username already taken");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(RegisterGUI.this,
+                            "Error: Username must be at least 6 characters\n" +
+                                    "and/or Password must match");
+                };
+            }
+        });
         add(registerButton);
 
         JLabel loginLabel = new JLabel("<html><a href=\"#\">Have an account? Login here</a></html>");
@@ -57,6 +85,20 @@ public class RegisterGUI extends BaseFrame {
         loginLabel.setFont(new Font("Dialog", Font.PLAIN, 20));
         loginLabel.setHorizontalAlignment(SwingConstants.CENTER);
         loginLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        loginLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                RegisterGUI.this.dispose();
+                new LoginGUI().setVisible(true);
+            }
+        });
         add(loginLabel);
+    }
+
+    private boolean validateUserInput(String username, String password, String rePassword) {
+        if (username.length() == 0 || password.length() == 0 || rePassword.length() == 0) return false;
+        if (username.length() < 6) return false;
+        if (!password.equals(rePassword)) return false;
+        return true;
     }
 }

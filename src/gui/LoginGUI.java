@@ -17,7 +17,7 @@ public class LoginGUI extends BaseFrame{
 
     @Override
     protected void addGuiComponents() {
-        JLabel musicStoreLabel = new JLabel("Music Store");
+        JLabel musicStoreLabel = new JLabel("Bank App Login");
         musicStoreLabel.setBounds(0, 20, super.getWidth(), 40);
         musicStoreLabel.setFont(new Font("Dialog", Font.BOLD, 32));
         musicStoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
