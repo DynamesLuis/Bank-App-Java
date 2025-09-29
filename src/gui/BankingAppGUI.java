@@ -4,8 +4,10 @@ import db_objs.User;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class BankingAppGUI extends BaseFrame {
+public class BankingAppGUI extends BaseFrame implements ActionListener {
     private JTextField totalMusicField;
     public JTextField getTotalMusicField(){return totalMusicField;}
 
@@ -25,48 +27,76 @@ public class BankingAppGUI extends BaseFrame {
         welcomeMessageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         add(welcomeMessageLabel);
 
-        JLabel totalMusicLabel = new JLabel("Current Balance");
-        totalMusicLabel.setBounds(0, 80, getWidth() - 10, 30);
-        totalMusicLabel.setFont(new Font("Dialog", Font.BOLD, 22));
-        totalMusicLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        add(totalMusicLabel);
+        JLabel currentBalanceLabel = new JLabel("Current Balance");
+        currentBalanceLabel.setBounds(0, 80, getWidth() - 10, 30);
+        currentBalanceLabel.setFont(new Font("Dialog", Font.BOLD, 22));
+        currentBalanceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        add(currentBalanceLabel);
 
-        totalMusicField = new JTextField("$" + user.getCurrentBalance());
-        totalMusicField.setBounds(15, 120, getWidth() - 50, 40);
-        totalMusicField.setFont(new Font("Dialog", Font.BOLD, 28));
-        totalMusicField.setHorizontalAlignment(SwingConstants.RIGHT);
-        totalMusicField.setEditable(false);
-        add(totalMusicField);
+        JTextField currentBalanceField = new JTextField("$" + user.getCurrentBalance());
+        currentBalanceField.setBounds(15, 120, getWidth() - 50, 40);
+        currentBalanceField.setFont(new Font("Dialog", Font.BOLD, 28));
+        currentBalanceField.setHorizontalAlignment(SwingConstants.RIGHT);
+        currentBalanceField.setEditable(false);
+        add(currentBalanceField);
 
         JButton depositButton = new JButton("Deposit");
         depositButton.setBounds(15, 180, getWidth() - 50, 50);
         depositButton.setFont(new Font("Dialog", Font.BOLD, 22));
         depositButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        depositButton.addActionListener(this);
         add(depositButton);
 
         JButton withdrawButton = new JButton("Withdraw");
         withdrawButton.setBounds(15, 250, getWidth() - 50, 50);
         withdrawButton.setFont(new Font("Dialog", Font.BOLD, 22));
         withdrawButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        withdrawButton.addActionListener(this);
         add(withdrawButton);
 
         JButton pastTransactionButton = new JButton("Past Transaction");
         pastTransactionButton.setBounds(15, 320, getWidth() - 50, 50);
         pastTransactionButton.setFont(new Font("Dialog", Font.BOLD, 22));
         pastTransactionButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        pastTransactionButton.addActionListener(this);
         add(pastTransactionButton);
 
         JButton transferButton = new JButton("Transfer");
         transferButton.setBounds(15, 390, getWidth() - 50, 50);
         transferButton.setFont(new Font("Dialog", Font.BOLD, 22));
         transferButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        transferButton.addActionListener(this);
         add(transferButton);
 
         JButton logoutButton = new JButton("Logout");
         logoutButton.setBounds(15, 500, getWidth() - 50, 50);
         logoutButton.setFont(new Font("Dialog", Font.BOLD, 22));
-        logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        logoutButton.addActionListener(this);
         add(logoutButton);
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        String buttonPressed = actionEvent.getActionCommand();
+        if (buttonPressed.equalsIgnoreCase("Logout")){
+            new LoginGUI().setVisible(true);
+            this.dispose();
+            return;
+        };
+
+        BankingAppDialog bankingAppDialog = new BankingAppDialog(user, this);
+        bankingAppDialog.setTitle(buttonPressed);
+        if (buttonPressed.equalsIgnoreCase("Deposit") || buttonPressed.equalsIgnoreCase("Withdraw")
+                || buttonPressed.equalsIgnoreCase("Transfer")){
+            bankingAppDialog.addCurrentBalanceAndAmout();
+            bankingAppDialog.addActionButton(buttonPressed);
+
+            if (buttonPressed.equalsIgnoreCase("Transfer")) {
+                bankingAppDialog.addUserField();
+            }
+
+            bankingAppDialog.setVisible(true);
+        }
     }
 }
