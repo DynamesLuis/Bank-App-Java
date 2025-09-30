@@ -8,8 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BankingAppGUI extends BaseFrame implements ActionListener {
-    private JTextField totalMusicField;
-    public JTextField getTotalMusicField(){return totalMusicField;}
+    private JTextField currentBalanceField;
+    public JTextField getCurrentBalanceField(){return currentBalanceField;}
 
     public BankingAppGUI(User user) {
         super("Banking App", user);
@@ -96,7 +96,9 @@ public class BankingAppGUI extends BaseFrame implements ActionListener {
                 bankingAppDialog.addUserField();
             }
 
-            bankingAppDialog.setVisible(true);
+        } else if(buttonPressed.equalsIgnoreCase("Past Transaction")){
+            bankingAppDialog.addPastTransactionComponents();
         }
+        bankingAppDialog.setVisible(true);
     }
 }
